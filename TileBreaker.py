@@ -28,7 +28,7 @@ sliderX_change = 0
 
 # function to build slider image
 def slider(x,y):
-    screen.blit(sliderImg,(x,y))
+    scr.screen.blit(sliderImg,(x,y))
 
 
 
@@ -56,7 +56,7 @@ for i in range(len(tileYpoints)):
 
 #function to build tiles
 def tile(x, y, tileImg):
-    screen.blit(tileImg, (x, y))
+    scr.screen.blit(tileImg, (x, y))
 
 
 
