@@ -13,6 +13,7 @@ class Ball():
         self.x_cor = x
         
         self.speed = 0.5
+        self.speedOriginal = self.speed
         self.x_dir = 1
         self.y_dir = -1
         self.state = "static"

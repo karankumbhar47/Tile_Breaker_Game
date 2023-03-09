@@ -51,11 +51,21 @@ while running:
                 slider.x_change = 1.6
             # key to release ball
             if event.key == pygame.K_SPACE:
-                ball.state = "moving"  
+                ball.state = "moving" 
+            #Speeding up the ball 
+            if event.key == pygame.K_s:
+                ball.speed = ball.speed*2
+            if event.key == pygame.K_p:
+                if ball.speed > 0:
+                    ball.speed =0
+                else:
+                    ball.speed = ball.speedOriginal
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 slider.x_change = 0
+            if event.key == pygame.K_s :
+                ball.speed = ball.speedOriginal
     
     #controlling movement and building slider     
     slider.move()
