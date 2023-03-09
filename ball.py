@@ -1,6 +1,11 @@
 import pygame
 import math
 
+'''
+Creating Ball class
+Detecting collisions with slider
+Adding related attributes to Ball class
+'''
 class Ball():
     def __init__(self,x,y,scr,slider):
         self.img = pygame.image.load('./images/58-Breakout-Tiles.png')
@@ -12,9 +17,9 @@ class Ball():
         self.y_dir = -1
         self.state = "static"
         
-        self.lenth = self.img.get_height()
+        self.length = self.img.get_height()
         self.width = self.img.get_width()
-        self.radius = self.lenth/2
+        self.radius = self.length/2
         
         self.scr = scr
         self.slider = slider
@@ -23,29 +28,55 @@ class Ball():
 
     #function to control movement of ball
     def move(self):
-        xOriginal = self.x_cor
-        yOriginal = self.y_cor
+        if self.state == "moving":
+            
+            xOriginal = self.x_cor
+            yOriginal = self.y_cor
 
-        self.x_cor += self.speed * self.x_dir
-        self.y_cor +=self.speed * self.y_dir
+            self.x_cor += self.speed * self.x_dir
+            self.y_cor +=self.speed * self.y_dir
 
-        #checking if ball will collide with left and right screen
-        if self.x_cor <= 1 or self.x_cor >= self.scr.width:
-            self.changeX()
-        #checking if ball will collide with cieling
-        if self.y_cor <= 1 :
-            self.changeY()
-        #checking if ball will collide with floor
-        if self.y_cor >= self.scr.height-1:
-            self.reset_position(self.slider.x_cor+40,self.slider.y_cor-20)
-       
+            #checking if ball will collide with left and right screen
+            if self.x_cor <= 0 or self.x_cor >= self.scr.width - self.width:
+                self.changeX()
+            #checking if ball will collide with cieling
+            if self.y_cor <= 0 :
+                self.changeY()
+            #checking if ball will collide with floor
+            if self.y_cor >= self.scr.height-self.length:
+                self.reset_position(self.slider.x_cor+self.slider.width/2-(self.width/2),self.slider.y_cor-self.length)
+
+            #ball
+            sprite1 = pygame.sprite.Sprite()
+            sprite1.image = self.img
+            sprite1.rect = sprite1.image.get_rect()
+            sprite1.rect.x = self.x_cor
+            sprite1.rect.y = self.y_cor
+
+            #slider
+            sprite2 = pygame.sprite.Sprite()
+            sprite2.image = self.slider.img
+            sprite2.rect = sprite2.image.get_rect()
+            sprite2.rect.x = self.slider.x_cor
+            sprite2.rect.y = self.slider.y_cor
+
+            # test for collision between the ball and slider
+            if pygame.sprite.collide_rect(sprite1, sprite2):
+                # collision detected
+                self.changeY()
+
+            #Setting new positions of ball
+            self.x_cor = xOriginal 
+            self.y_cor = yOriginal
+
+            self.x_cor += self.speed * self.x_dir
+            self.y_cor +=self.speed * self.y_dir
+
+        else:
+            self.x_cor = self.slider.x_cor+self.slider.width/2-self.width/2
+            self.y_cor = self.slider.y_cor-self.length
+
         # building ball at new position
-        self.x_cor = xOriginal 
-        self.y_cor = yOriginal
-
-        self.x_cor += self.speed * self.x_dir
-        self.y_cor +=self.speed * self.y_dir
-        
         self.build(self.x_cor, self.y_cor)
 
 

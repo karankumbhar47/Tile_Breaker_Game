@@ -9,11 +9,13 @@ slider moving function.
 
 class Slider:
     def __init__(self,x,y,screen):
+        self.img = pygame.image.load('./images/53-Breakout-Tiles.png')
         self.x_cor = x
         self.y_cor = y
         self.x_change = 0
         self.screen = screen
-        self.img = pygame.image.load('./images/53-Breakout-Tiles.png')
+        self.length = self.img.get_height()
+        self.width = self.img.get_width()
 
     #function to build slider  
     def build(self):
@@ -24,7 +26,7 @@ class Slider:
         self.x_cor += self.x_change
         if self.x_cor <=0 :
             self.x_cor = 0
-        elif self.x_cor >= self.screen.width - 120 :
-            self.x_cor = self.screen.width - 120
+        elif self.x_cor >= self.screen.width - self.width :
+            self.x_cor = self.screen.width - self.width
         
         self.build()
