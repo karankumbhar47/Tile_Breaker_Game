@@ -1,5 +1,6 @@
 import pygame
 import random
+from screen import Screen
 
 
 # initializing pygame
@@ -9,7 +10,8 @@ pygame.init()
 screen_hieght = 800
 screen_width = 836
 
-screen = pygame.display.set_mode((screen_width,screen_hieght))
+#creating screen object
+scr = Screen(screen_hieght,screen_width)
 
 
 # setting title and game icon
@@ -63,8 +65,8 @@ def tile(x, y, tileImg):
 running = True
 while running:
 
-    #screen color
-    screen.fill((0,0,0))
+    #screen color 
+    scr.screen.fill((0,0,0))
 
 
     # checking event to quit window
