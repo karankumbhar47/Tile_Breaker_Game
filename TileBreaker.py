@@ -1,7 +1,7 @@
 import pygame
 import random
 from screen import Screen
-
+from slider import Slider
 
 # initializing pygame
 pygame.init()
@@ -12,7 +12,8 @@ screen_width = 836
 
 #creating screen object
 scr = Screen(screen_hieght,screen_width)
-
+#creating slider object 
+slider = Slider(0,screen_hieght-50,scr)
 
 # setting title and game icon
 pygame.display.set_caption("Tile Breaker")
@@ -20,15 +21,16 @@ game_icon = pygame.image.load('./images/brick-breaker.png')
 pygame.display.set_icon(game_icon)
 
 
-# slider
-sliderImg = pygame.image.load('./images/53-Breakout-Tiles.png')
-sliderX = 0
-sliderY = screen_hieght - 50
-sliderX_change = 0
+# # slider
+# sliderImg = pygame.image.load('./images/53-Breakout-Tiles.png')
+# sliderX = 0
+# sliderY = screen_hieght - 50
+# sliderX_change = 0
 
-# function to build slider image
-def slider(x,y):
-    scr.screen.blit(sliderImg,(x,y))
+
+# # function to build slider image
+# def slider(x,y):
+#     scr.screen.blit(sliderImg,(x,y))
 
 
 
@@ -77,30 +79,29 @@ while running:
         # adding keys to move slider left and right
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                sliderX_change = -0.6
+                slider.x_change = -0.6
             if event.key == pygame.K_RIGHT:
-                sliderX_change = 0.6
+                slider.x_change = 0.6
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                sliderX_change = 0
+                slider.x_change = 0
 
-
-    # controlling movement of slider at the end of screen
-    sliderX += sliderX_change
-    if sliderX <=0 :
-        sliderX = 0
-    elif sliderX >= screen_width - 120 :
-        sliderX = screen_width - 120
-
-    #building slider
-    slider(sliderX,sliderY)
-
-
+    # # controlling movement of slider at the end of screen    
+    # slider.x_cor += slider.x_change
+    #if slider.x_cor <=0 :    
+    # #       slider.x_cor = 0
+    #elif sliderX >= screen_width - 120 :    
+        # sliderX = screen_width - 120
+    ##building slider
+    #slider(sliderX,sliderY)
+    
+    #controlling movement and building slider     
+    slider.move()
+      
     #building tiles
-    for i in range(len(tilePositionArray)):
+    for i in range(len(tilePositionArray)):        
         tile(tilePositionArray[i][0],tilePositionArray[i][1],tilePositionArray[i][2])
 
-
-    #updating display every time
+    #updating display every time    
     pygame.display.update()
