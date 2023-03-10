@@ -20,6 +20,7 @@ scr = Screen(screen_hieght,screen_width)
 slider = Slider(0,screen_hieght-50,scr)
 #creating ball object
 ball = Ball((slider.x_cor+slider.width/2),(slider.y_cor-20),scr,slider)
+ball.ball=ball
 #Creating Tile Object
 tile = Tile(scr,ball)
 
@@ -28,6 +29,10 @@ tile = Tile(scr,ball)
 pygame.display.set_caption("Tile Breaker")
 game_icon = pygame.image.load('./images/brick-breaker.png')
 pygame.display.set_icon(game_icon)
+
+
+
+
 
 
 # to keep window alive running while loop
@@ -66,6 +71,7 @@ while running:
                 slider.x_change = 0
             if event.key == pygame.K_s :
                 ball.speed = ball.speedOriginal
+
     
     #controlling movement and building slider     
     slider.move()
