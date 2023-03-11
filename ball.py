@@ -2,6 +2,9 @@ import pygame
 import math
 import time
 from collision import Collision
+from pygame import mixer
+import time
+
 
 '''
 Creating Ball class
@@ -11,8 +14,11 @@ Adding related attributes to Ball class
 class Ball():
     def __init__(self,x,y,scr,slider):
         self.img = pygame.image.load('./images/58-Breakout-Tiles.png')
+        self.deadImg = pygame.image.load('./images/ghost.png')
         self.y_cor = y
         self.x_cor = x
+        self.deadImgX = self.x_cor
+        self.deadImgY = -50
         
         self.speed = 0.3
         self.speedOriginal = self.speed
@@ -28,6 +34,7 @@ class Ball():
         self.slider = slider
         
         self.life = 3
+        self.maxlife = 6
         self.heartImg = pygame.image.load('./images/60-Breakout-Tiles.png')
         self.heartImg = pygame.transform.scale(self.heartImg,(32,32))
         self.gameOver = 0
@@ -45,15 +52,25 @@ class Ball():
             # function to check collision of ball and slider
             collide = Collision(self.slider,self.ball)
             collide.collisionDetect()
+            bullet_sound = mixer.Sound('./audio/laser.wav')
 
             #checking if ball will collide with left and right screen
             if self.x_cor <= 0 or self.x_cor >= self.scr.width - self.width:
                 self.x_dir*= -1
+                bullet_sound.play()
             #checking if ball will collide with cieling
             if self.y_cor <= 0 :
                 self.y_dir*= -1
+                bullet_sound.play()
             #checking if ball will collide with floor
             if self.y_cor >= self.scr.height-self.length:
+                life_loseSound = mixer.Sound('./audio/life_lose.wav')
+                life_loseSound.play()
+                time.sleep(0.1)
+                self.deadImgX = self.x_cor
+                self.deadImgY = self.y_cor
+                self.x_cor = -100
+                self.y_cor = -100
                 self.reset_position(self.slider.x_cor+self.slider.width/2-(self.width/2),self.slider.y_cor-self.length)
 
             
@@ -103,7 +120,14 @@ class Ball():
     def reset_position(self,x,y):
         self.life -= 1
         if self.life ==0:
-            self.gameOver = True
+            self.gameOver = 1
+            game_overSound = mixer.Sound('./audio/game_over.wav')
+            game_overSound.play()
+            time.sleep(0.01)
+        else:
+            life_loseSound = mixer.Sound('./audio/life_lose.wav')
+            life_loseSound.play()
+            time.sleep(0.01)
         self.x_cor = x
         self.y_cor = y
         self.x_dir = 1

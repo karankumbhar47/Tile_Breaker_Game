@@ -4,6 +4,8 @@ import random
 from collision import Collision
 import pickle
 from os import path
+from pygame import mixer
+import time
 
 class SubTile:
     def __init__(self,img,x,y) -> None:
@@ -64,7 +66,7 @@ class Tile:
         # return tilePositionArray
         if path.exists(f'level{level}_data'):
             pickle_in = open(f'level{level}_data', 'rb')
-        data = pickle.load(pickle_in)
+            data = pickle.load(pickle_in)
 
         tilePositionArray = []
         row_count = 0
@@ -128,7 +130,15 @@ class Tile:
                 elif i[2] == self.unbreakableBreakTileImg and i[3] == 100:
                     i[2] = self.unbreakableBreakedTileImg
                 if i[3]==0:
-                    score+=100
+                    explosion_sound = mixer.Sound('./audio/explosion.wav')
+                    explosion_sound.play()
+                    time.sleep(0.01)
+                    if i[2] == self.unbreakableBreakedTileImg:
+                        score+=300
+                    elif i[2] == self.steelTileBreakImg:
+                        score +=200
+                    else:
+                        score += 100
                     self.positionArray.remove(i)
                     self.num-=1
                 self.remove =0

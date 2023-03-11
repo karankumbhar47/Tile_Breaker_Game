@@ -1,6 +1,8 @@
 import pygame
 import random
 import time
+from pygame import mixer
+from PIL import ImageGrab, ImageFilter
 
 from screen import Screen
 from slider import Slider
@@ -13,15 +15,17 @@ from display import Display
 # initializing pygame
 pygame.init()
 
+
 # Global varibale
 screen_height = 800
 screen_width = 836
-main_menu = True
+main_menu = 1
 level = 1
 levelMax = 10
 score = 0
 resetCall = 0
 life = [3,-1]
+pause = False
 
 # function to reset screen
 def reset(scr):
@@ -42,19 +46,9 @@ scr = Screen(screen_height,screen_width)
 slider,ball,tile = reset(scr)
 display = Display(scr)
 
-# loading button images and scaling to appropriate size
-# restartBtn = pygame.image.load('./images/restart_btn.png')
-# startBtn = pygame.image.load('./images/start_btn.png')
-# startBtn = pygame.transform.scale(startBtn,(180,80))
-# exitBtn = pygame.image.load('./images/exit_btn.png')
-# exitBtn = pygame.transform.scale(exitBtn,(180,80))
-#
-# #creating button images
-# restartBtn = Button(screen_width//2 - 100, screen_height//2 -20,restartBtn,scr)
-# startBtn = Button(screen_width//2 - 200, screen_height//2 -40,startBtn,scr)
-# exitBtn = Button(screen_width//2 + 50, screen_height//2 -40,exitBtn,scr)
-
-
+# Music section
+if main_menu == 0:
+    mixer.music.load('./audio/background.wav').play()
 
 # setting title,font and game icon
 pygame.display.set_caption("Tile Breaker")
@@ -84,26 +78,24 @@ while running:
     if main_menu==1:
         main_menu,running = display.mainMenuDisplay(main_menu,running)
     elif main_menu ==0:
-        # if startBtn.draw():
-        #     main_menu = False
-        # if exitBtn.draw():
-        #     running = False
-    
-    #game window
-    # else:
-        #controlling movement and building slider     
-        slider.move()
+        if ball.gameOver == 0:
+            #controlling movement and building slider     
+            slider.move()
 
-        #checking ball movement and building ball
-        ball.move()
+            #checking ball movement and building ball
+            ball.move()
 
-        #Detecting Tile Collision
-        score =tile.collision(score)
+            #Detecting Tile Collision
+            score =tile.collision(score)
 
-        #Displaying tiles on Screen
-        tile.displayPattern()
-        main_menu,ballSpeed,resetCall= display.gameWindow(score,level,ball)
-        ball.speed = ballSpeed
+            #Displaying tiles on Screen
+            tile.displayPattern()
+            if pause ==1:
+                screenshot = pygame_blurred_screenshot
+            else:
+                screenshot = None
+            main_menu,ballSpeed,resetCall,pause= display.gameWindow(score,level,ball,pause,screenshot)
+            ball.speed = ballSpeed
 
         # Game over
         if ball.gameOver==1:
@@ -122,6 +114,12 @@ while running:
             tile.positionArray =[]
             tile.displayPattern()
             time.sleep(1)
+            if level == levelMax:
+                if ball.life == ball.maxlife:
+                    ball.life = 3
+                    score += 10000
+                else:
+                    ball.life+=1
             level = level%levelMax
             level +=1
             life = [ball.life,1]
@@ -153,12 +151,17 @@ while running:
         if event.type == pygame.KEYDOWN:
             # keys to control slider movement
             if event.key == pygame.K_LEFT and ball.speed !=0:
-                slider.x_change = -1.6
+                slider.x_change = -2.6
             if event.key == pygame.K_RIGHT and ball.speed !=0:
-                slider.x_change = 1.6
+                slider.x_change = 2.6
             # key to release ball
             if event.key == pygame.K_SPACE:
                 ball.state = "moving" 
+            if event.key == pygame.K_ESCAPE and main_menu+ball.gameOver ==0 :
+                pause = not(pause)
+                screenshot = ImageGrab.grab(bbox=None)
+                blurred_screenshot = screenshot.filter(ImageFilter.GaussianBlur(radius=10))
+                pygame_blurred_screenshot = pygame.image.frombuffer(blurred_screenshot.tobytes(), blurred_screenshot.size, blurred_screenshot.mode)
             #Speeding up the ball 
             if event.key == pygame.K_s:
                 ball.speed = ball.speed*2
@@ -177,12 +180,13 @@ while running:
                 ball.speed = ball.speedOriginal
     if resetCall == 1:
         slider,ball,tile = reset(scr)
-        score = 0
         if life[1] >0:
             ball.life = life[0]
             life[1]= -1
+        else:
+            score = 0
         resetCall = 0
-
-
     #updating display every time    
     pygame.display.update()
+
+pygame.quit()

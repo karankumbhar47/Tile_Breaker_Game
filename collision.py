@@ -1,5 +1,5 @@
 import pygame
-
+from pygame import mixer
 
 '''
 Collision class
@@ -42,9 +42,11 @@ class Collision:
         elif self.objectRect.bottomright == self.surfaceRect.topleft or self.objectRect.bottomleft == self.surfaceRect.topright or self.objectRect.topleft == self.surfaceRect.bottomright or self.objectRect.topright == self.surfaceRect.bottomleft:
             self.extremeSurfaceCollision()
 
-        # elif self.objectRect.midtop[1] > self.surfaceRect.midtop[1] and self.objectRect.midtop[1] <= self.surfaceRect.midbottom[1]:
-        #     self.bottomSurfaceCollision()
-
+        elif self.objectRect.midtop[1] > self.surfaceRect.midtop[1] and self.objectRect.midtop[1] <= self.surfaceRect.midbottom[1]:
+            self.bottomSurfaceCollision()
+        if self.remove == 1:
+            bullet_sound = mixer.Sound('./audio/laser.wav')
+            bullet_sound.play()
 
     def topSurfaceCollision(self):
         if self.objectRect.midbottom[0] >=self.surfaceRect.topleft[0] and self.objectRect.midbottom[0] <= self.surfaceRect.topright[0]:

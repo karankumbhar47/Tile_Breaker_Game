@@ -1,6 +1,7 @@
 import pygame
 import time 
 from button import Button
+from PIL import ImageGrab, ImageFilter
 # from TileBreaker import reset
 clock = pygame.time.Clock()
 
@@ -19,10 +20,14 @@ class Display:
         self.exitBtnImg = pygame.transform.scale(self.exitBtnImg,(180,80))
 
         self.gameExitBtn = pygame.image.load('./images/Exit_Button_Symbol_Png.png')
-        self.gameExitBtn = pygame.transform.scale(self.gameExitBtn,(32,32))
+        self.gameExitBtn = pygame.transform.scale(self.gameExitBtn,(150,150))
 
         self.gamePauseBtn = pygame.image.load('./images/Pause_Button_Symbol_Png.png')
-        self.gamePauseBtn = pygame.transform.scale(self.gamePauseBtn,(32,32))
+        self.gamePauseBtn = pygame.transform.scale(self.gamePauseBtn,(150,150))
+
+        self.gamePlayBtn = pygame.image.load('./images/Play_Button_Symbol_Png.png')
+        self.gamePlayBtn = pygame.transform.scale(self.gamePlayBtn,(150,150))
+
 
         self.scr = scr
         self.font = pygame.font.Font('freesansbold.ttf', 32)
@@ -51,8 +56,9 @@ class Display:
         self.startBtn = Button(self.scr.width//2 - 200, self.scr.height//2 -40,self.startBtn,self.scr)
         self.exitBtn = Button(self.scr.width//2 + 50, self.scr.height//2 -40,self.exitBtnImg,self.scr)
         self.exitMainMenuBtn = Button(20, self.scr.height - 150,self.exitBtnImg,self.scr)
-        self.gamePauseBtn = Button(0,self.scr.height-32,self.gamePauseBtn,self.scr)
-        self.gameExitBtn = Button(self.scr.width-32,self.scr.height-32,self.gameExitBtn,self.scr)
+        self.gamePauseBtn = Button(self.scr.width//2 - 80,self.scr.height//2 - 200,self.gamePauseBtn,self.scr)
+        self.gamePlayBtn = Button(self.scr.width//2 - 80,self.scr.height//2 - 200,self.gamePlayBtn,self.scr)
+        self.gameExitBtn = Button(self.scr.width//2 - 80 ,self.scr.height//2 + 100,self.gameExitBtn,self.scr)
 
     def mainMenuDisplay(self,mainMenu,running):
         if self.startBtn.draw():
@@ -110,31 +116,50 @@ class Display:
             
 
 
-    def gameWindow(self,score,level,ball):
+    def gameWindow(self,score,level,ball,pause,screenshot):
         scoreText = self.font.render("Score :" + str(score), True, (255,255,255))
         self.scr.screen.blit(scoreText,(0,0))
         levelText = self.font.render("level "+str(level), True, (255,255,255))
         self.scr.screen.blit(levelText,(self.scr.width -110,10))
         mainMenu = 0
         resetCall = 0
+        ballSpeed = ball.speed
         # ballSpeed = ball.speedOriginal
-        if self.gameExitBtn.draw():
-            mainMenu = 1
-            print("exit")
-            resetCall = 1
-            ballSpeed = ball.speedOriginal
-        if self.gamePauseBtn.draw():
-            if ball.state == "moving":
-                if ball.speed == 0:
+        if pause:
+            self.scr.screen.blit(screenshot,(0,0))
+            ball.speed = 0
+            if self.gameExitBtn.draw():
+                mainMenu = 1
+                print("exit")
+                resetCall = 1
+                ballSpeed = ball.speedOriginal
+                pause = 0
+            # else:
+                # ballSpeed = s
+            if ballSpeed !=0:
+                if self.gamePauseBtn.draw():
+                    # if ball.state == "moving":
+                    #     if ball.speed == 0:
+                    #         ballSpeed = ball.speedOriginal
+                    #     else:
+                    #         ballSpeed = 0
+                    # else:
+                    #     ballSpeed = ball.speed
                     ballSpeed = ball.speedOriginal
+                    pause = 0
                 else:
-                    ballSpeed = 0
+                    ballSpeed = ball.speed
             else:
-                ballSpeed = ball.speed
-        else:
-                ballSpeed = ball.speed
+                if self.gamePlayBtn.draw():
+                    ballSpeed = ball.speedOriginal
+                    pause = 0
+                else:
+                    ballSpeed = ball.speed
 
-        return mainMenu,ballSpeed,resetCall
+        else:
+            ballSpeed = ball.speed
+        return mainMenu,ballSpeed,resetCall,pause
+
     
     def loadingBarSetup(self):
         print("loading ...")
