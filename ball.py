@@ -14,7 +14,7 @@ class Ball():
         self.y_cor = y
         self.x_cor = x
         
-        self.speed = 0.5
+        self.speed = 0.3
         self.speedOriginal = self.speed
         self.x_dir = 1
         self.y_dir = -1
@@ -30,7 +30,7 @@ class Ball():
         self.life = 3
         self.heartImg = pygame.image.load('./images/60-Breakout-Tiles.png')
         self.heartImg = pygame.transform.scale(self.heartImg,(32,32))
-        self.gameOver = False
+        self.gameOver = 0
 
     #function to control movement of ball
     def move(self):
