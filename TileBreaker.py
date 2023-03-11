@@ -1,9 +1,12 @@
 import pygame
 import random
+import time
+
 from screen import Screen
 from slider import Slider
 from ball import Ball
 from tile import Tile
+
 
 # initializing pygame
 pygame.init()
