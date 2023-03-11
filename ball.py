@@ -14,7 +14,7 @@ class Ball():
         self.y_cor = y
         self.x_cor = x
         
-        self.speed = 0.5
+        self.speed = 2
         self.speedOriginal = self.speed
         self.x_dir = 1
         self.y_dir = -1
@@ -27,7 +27,10 @@ class Ball():
         self.scr = scr
         self.slider = slider
         
-        self.build(self.x_cor,self.y_cor)
+        self.life = 3
+        self.heartImg = pygame.image.load('./images/60-Breakout-Tiles.png')
+        self.heartImg = pygame.transform.scale(self.heartImg,(32,32))
+        self.gameOver = False
 
     #function to control movement of ball
     def move(self):
@@ -68,11 +71,22 @@ class Ball():
 
         # building ball at new position
         self.build(self.x_cor, self.y_cor)
+        # building heart
+        self.build_heart()
+
 
 
     #building ball
     def build(self,x,y):
         self.scr.screen.blit(self.img,(x,y))
+
+    #building hearts at top of screen
+    def build_heart(self):
+        y = 0
+        x = self.scr.width//2 - 48
+        for i in range(self.life):
+            self.scr.screen.blit(self.heartImg,(x,y))
+            x += self.heartImg.get_width() + 5
 
     #function to change the direction of ball in x direction
     def changeX(self):
@@ -80,6 +94,8 @@ class Ball():
 
     #function to change the direction of ball in y direction
     def changeY(self):
+        # if self.y_dir ==1:
+        #     self.y_dir = -1
         self.y_dir *= -1
         
 

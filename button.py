@@ -1,5 +1,10 @@
 import pygame
 
+'''
+Button class
+Displaying button
+Detection action
+'''
 class Button():
 	def __init__(self, x, y, image,scr):
 		self.image = image

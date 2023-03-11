@@ -24,6 +24,7 @@ class Tile:
         self.width = self.mudTileImg.get_width()
         self.height = self.mudTileImg.get_height()
 
+        self.num = 0
         self.positionArray = self.createTiles()
         self.ball = ball
 
@@ -41,7 +42,15 @@ class Tile:
         for i in range(len(tileYpoints)):
             for j in range(len(tileXpointsA)):
                 randomTile = random.choice([self.mudTileImg,self.steelTileImg,self.unbreakableTileImg])
-                tilePositionArray.append([tileXpointsA[j],tileYpoints[i],randomTile])
+                if randomTile == self.mudTileImg:
+                    tilePositionArray.append([tileXpointsA[j],tileYpoints[i],randomTile,100])
+                    self.num+=1
+                elif randomTile == self.steelTileImg:
+                    tilePositionArray.append([tileXpointsA[j],tileYpoints[i],randomTile,200])
+                    self.num+=1
+                else:
+                    tilePositionArray.append([tileXpointsA[j],tileYpoints[i],randomTile,300])
+                    self.num+=1
         return tilePositionArray
 
     #Function to display the tiles on the screen
@@ -50,7 +59,7 @@ class Tile:
             self.build(self.positionArray[i][0],self.positionArray[i][1],self.positionArray[i][2],)
 
     #Function to detect the collision between tiles and ball
-    def collision(self):
+    def collision(self,score):
         #using collision class to detect collision
         for i in self.positionArray:
             tile = SubTile(i[2],i[0],i[1])
@@ -58,6 +67,11 @@ class Tile:
             collide.collisionDetect()
             # test for collision between the tile and ball
             if collide.remove ==1:
-                self.positionArray.remove(i)
+                i[3] -= 100
+                # adding score after hit
+                score+=100
+                if i[3]==0:
+                    self.positionArray.remove(i)
+                    self.num-=1
                 collide.remove =0
-       
+        return score

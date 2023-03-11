@@ -13,9 +13,11 @@ class Slider:
         self.x_cor = x
         self.y_cor = y
         self.x_change = 0
-        self.scr = scr
+
         self.length = self.img.get_height()
         self.width = self.img.get_width()
+
+        self.scr = scr
 
     #function to build slider  
     def build(self):

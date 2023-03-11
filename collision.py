@@ -21,22 +21,11 @@ class Collision:
         self.objectRect = self.object.img.get_rect()
         self.objectRect.x = self.object.x_cor
         self.objectRect.y = self.object.y_cor
-        self.objectPoints =[
-            [self.objectRect.topleft, self.objectRect.midtop, self.objectRect.topright],
-            [self.objectRect.midleft, self.objectRect.center, self.objectRect.midright],
-            [self.objectRect.bottomleft, self.objectRect.midbottom, self.objectRect.bottomright]
-        ]
 
         self.surfaceRect = self.surface.img.get_rect()
         self.surfaceRect.x = self.surface.x_cor
         self.surfaceRect.y = self.surface.y_cor
-        self.surfacePoints =[
-            [self.surfaceRect.topleft, self.surfaceRect.midtop, self.surfaceRect.topright],
-            [self.surfaceRect.midleft, self.surfaceRect.center, self.surfaceRect.midright],
-            [self.surfaceRect.bottomleft, self.surfaceRect.midbottom, self.surfaceRect.bottomright]
-        ]
-
-
+        
     # function to detect collision on either of four surfaces of surfaceOject
     def collisionDetect(self):
         self.makeRect()
@@ -53,8 +42,8 @@ class Collision:
         elif self.objectRect.bottomright == self.surfaceRect.topleft or self.objectRect.bottomleft == self.surfaceRect.topright or self.objectRect.topleft == self.surfaceRect.bottomright or self.objectRect.topright == self.surfaceRect.bottomleft:
             self.extremeSurfaceCollision()
 
-        elif self.objectRect.midtop[1] > self.surfaceRect.midtop[1] and self.objectRect.midtop[1] <= self.surfaceRect.midbottom[1]:
-            self.bottomSurfaceCollision()
+        # elif self.objectRect.midtop[1] > self.surfaceRect.midtop[1] and self.objectRect.midtop[1] <= self.surfaceRect.midbottom[1]:
+        #     self.bottomSurfaceCollision()
 
 
     def topSurfaceCollision(self):
