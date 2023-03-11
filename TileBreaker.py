@@ -63,8 +63,7 @@ font = pygame.font.Font('freesansbold.ttf', 32)
 #loading background and other images
 backgroundImg = pygame.image.load('./images/background.jpg')
 backgroundImg = pygame.transform.scale(backgroundImg,(screen_width,screen_height))
-heartImg = pygame.image.load('./images/60-Breakout-Tiles.png')
-lifeArray = [heartImg]*3
+
 
 
 # to keep window alive running while loop
@@ -73,39 +72,10 @@ while running:
 
     #screen color 
     scr.screen.fill((0,0,0))
+    # setting background image
     scr.screen.blit(backgroundImg,(0,0))
 
-    # checking event to quit window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        # adding keys to move slider left and right
-        if event.type == pygame.KEYDOWN:
-            # keys to control slider movement
-            if event.key == pygame.K_LEFT:
-                slider.x_change = -1.6
-            if event.key == pygame.K_RIGHT:
-                slider.x_change = 1.6
-            # key to release ball
-            if event.key == pygame.K_SPACE:
-                ball.state = "moving" 
-            #Speeding up the ball 
-            if event.key == pygame.K_s:
-                ball.speed = ball.speed*2
-            # pause functionality of ball
-            if event.key == pygame.K_p:
-                if ball.speed > 0:
-                    ball.speed =0
-                else:
-                    ball.speed = ball.speedOriginal
-
-        # key releasing
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                slider.x_change = 0
-            if event.key == pygame.K_s :
-                ball.speed = ball.speedOriginal
+   
 
     # showing main menu
     if main_menu:
@@ -156,6 +126,38 @@ while running:
 
         levelText = font.render("level "+str(level), True, (255,255,255),)
         scr.screen.blit(levelText,(screen_width -110,10))
+
+     # checking event to quit window
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        # adding keys to move slider left and right
+        if event.type == pygame.KEYDOWN:
+            # keys to control slider movement
+            if event.key == pygame.K_LEFT:
+                slider.x_change = -1.6
+            if event.key == pygame.K_RIGHT:
+                slider.x_change = 1.6
+            # key to release ball
+            if event.key == pygame.K_SPACE:
+                ball.state = "moving" 
+            #Speeding up the ball 
+            if event.key == pygame.K_s:
+                ball.speed = ball.speed*2
+            # pause functionality of ball
+            if event.key == pygame.K_p:
+                if ball.speed > 0:
+                    ball.speed =0
+                else:
+                    ball.speed = ball.speedOriginal
+
+        # key releasing
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                slider.x_change = 0
+            if event.key == pygame.K_s :
+                ball.speed = ball.speedOriginal
 
 
     #updating display every time    

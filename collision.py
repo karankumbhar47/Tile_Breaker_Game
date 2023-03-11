@@ -48,58 +48,58 @@ class Collision:
 
     def topSurfaceCollision(self):
         if self.objectRect.midbottom[0] >=self.surfaceRect.topleft[0] and self.objectRect.midbottom[0] <= self.surfaceRect.topright[0]:
-            self.object.changeX()
+            self.object.changeY()
             self.remove=1
 
         elif self.objectRect.bottomright[0] >= self.surfaceRect.topleft[0] and self.objectRect.bottomright[0] <= self.surfaceRect.midtop[0]:
-            self.object.changeX()
+            self.object.changeY()
             self.remove=1
 
         elif self.objectRect.bottomleft[0] >= self.surfaceRect.topleft[0] and self.objectRect.bottomleft[0] <= self.surfaceRect.topright[0]:
-            self.object.changeX()
+            self.object.changeY()
             self.remove=1
             
             
     
     def bottomSurfaceCollision(self):
         if self.objectRect.midtop[0]>= self.surfaceRect.bottomleft[0]  and self.objectRect.midtop[0] <= self.surfaceRect.bottomright[0]:
-            self.object.changeX()
+            self.object.changeY()
             self.remove=1
             
 
         elif self.objectRect.topright[0] > self.surfaceRect.bottomleft[0] and self.objectRect.topright[0] <= self.surfaceRect.midbottom[0]:
-            self.object.changeX()
+            self.object.changeY()
             self.remove=1
 
         elif self.objectRect.topleft[0] < self.surfaceRect.bottomright[0] and self.objectRect.topleft[0] >= self.surfaceRect.midbottom[0]:
-            self.object.changeX()
+            self.object.changeY()
             self.remove=1
 
     def leftSurfaceCollision(self):
         if self.objectRect.midright[1] >= self.surfaceRect.topleft[1] and self.objectRect.midright[1] <= self.surfaceRect.bottomleft[1]:
-            self.object.changeY()
+            self.object.changeX()
             self.remove=1
             
         elif self.objectRect.topright[1] >= self.surfaceRect.topleft[1] and self.objectRect.topright[1] <= self.surfaceRect.bottomleft[1]:
-            self.object.changeY()
+            self.object.changeX()
             self.remove=1
 
         elif self.objectRect.bottomright[1] >= self.surfaceRect.topleft[1] and self.objectRect.bottomright[1] <= self.surfaceRect.bottomleft[1]:
-            self.object.changeY()
+            self.object.changeX()
             self.remove=1
         
     
     def rightSurfaceCollision(self):
         if self.objectRect.midleft[1] >= self.surfaceRect.topleft[1] and self.objectRect.midleft[1] <= self.surfaceRect.bottomleft[1]:
-            self.object.changeY()
+            self.object.changeX()
             self.remove=1
             
         elif self.objectRect.topleft[1] >= self.surfaceRect.topright[1] and self.objectRect.topleft[1] <= self.surfaceRect.bottomright[1]:
-            self.object.changeY()
+            self.object.changeX()
             self.remove=1
 
         elif self.objectRect.bottomleft[1] >= self.surfaceRect.topright[1] and self.objectRect.bottomleft[1] <= self.surfaceRect.bottomright[1]:
-            self.object.changeY()
+            self.object.changeX()
             self.remove=1
 
   
