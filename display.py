@@ -71,9 +71,15 @@ class Display:
     def restartDisplay(self,score):
         highScore = self.recordHighScore(score)
 
+        gameOverFont = pygame.font.Font('freesansbold.ttf', 64)
+        gameOverText = gameOverFont.render("Game Over", True, (255,255,255))
+        gameOverRect = gameOverText.get_rect()
+        gameOverRect.center = [self.scr.width//2,self.scr.height//2 - 200]
+
         yourScore = self.font.render("Your Score", True, (255,255,255))
         yourScoreRect = yourScore.get_rect()
         yourScoreRect.center = [self.scr.width//2,self.scr.height//2 - 100]
+
         scoreText = self.font.render(str(score), True, (255,255,255))
         scoreTextRect = scoreText.get_rect()
         scoreTextRect.center = [self.scr.width//2,self.scr.height//2 - 58]
@@ -90,6 +96,7 @@ class Display:
         self.scr.screen.blit(scoreText,scoreTextRect)
         self.scr.screen.blit(highScoreText,highScoreTextRect)
         self.scr.screen.blit(highScore ,highScoreRect)
+        self.scr.screen.blit(gameOverText,gameOverRect)
 
         mainMenu = 0
         level = 1
@@ -119,7 +126,7 @@ class Display:
         scoreText = self.font.render("Score :" + str(score), True, (255,255,255))
         self.scr.screen.blit(scoreText,(0,0))
         levelText = self.font.render("level "+str(level), True, (255,255,255))
-        self.scr.screen.blit(levelText,(self.scr.width -110,10))
+        self.scr.screen.blit(levelText,(self.scr.width -120,10))
 
         mainMenu = 0
         resetCall = 0

@@ -18,7 +18,7 @@ pygame.init()
 screen_height = 800
 screen_width = 836
 main_menu = 1
-level = 1
+level = 5
 levelMax = 10
 score = 0
 resetCall = 0
