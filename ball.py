@@ -4,7 +4,7 @@ import time
 from collision import Collision
 from pygame import mixer
 import time
-
+from sound import Music
 
 '''
 Creating Ball class
@@ -38,6 +38,7 @@ class Ball():
         self.heartImg = pygame.image.load('./images/60-Breakout-Tiles.png')
         self.heartImg = pygame.transform.scale(self.heartImg,(32,32))
         self.gameOver = 0
+        self.sound = Music(True)
 
     #function to control movement of ball
     def move(self):
@@ -52,20 +53,18 @@ class Ball():
             # function to check collision of ball and slider
             collide = Collision(self.slider,self.ball)
             collide.collisionDetect()
-            bullet_sound = mixer.Sound('./audio/laser.wav')
 
             #checking if ball will collide with left and right screen
             if self.x_cor <= 0 or self.x_cor >= self.scr.width - self.width:
                 self.x_dir*= -1
-                bullet_sound.play()
+                self.sound.collision()
             #checking if ball will collide with cieling
             if self.y_cor <= 0 :
                 self.y_dir*= -1
-                bullet_sound.play()
+                self.sound.collision()
             #checking if ball will collide with floor
             if self.y_cor >= self.scr.height-self.length:
-                life_loseSound = mixer.Sound('./audio/life_lose.wav')
-                life_loseSound.play()
+                self.sound.LifeLose()
                 time.sleep(0.1)
                 self.deadImgX = self.x_cor
                 self.deadImgY = self.y_cor
@@ -121,12 +120,10 @@ class Ball():
         self.life -= 1
         if self.life ==0:
             self.gameOver = 1
-            game_overSound = mixer.Sound('./audio/game_over.wav')
-            game_overSound.play()
+            self.sound.gameOver()
             time.sleep(0.01)
         else:
-            life_loseSound = mixer.Sound('./audio/life_lose.wav')
-            life_loseSound.play()
+            self.sound.LifeLose()
             time.sleep(0.01)
         self.x_cor = x
         self.y_cor = y

@@ -5,6 +5,7 @@ from collision import Collision
 import pickle
 from os import path
 from pygame import mixer
+from sound import Music
 import time
 
 class SubTile:
@@ -39,6 +40,8 @@ class Tile:
         self.positionArray = self.createTiles(level)
         self.tile = None
         self.ball = ball
+
+        self.sound = Music(True) 
 
     #Function to build a tile at x and y coordinates on the screen
     def build(self,x,y,tileImg):
@@ -130,8 +133,7 @@ class Tile:
                 elif i[2] == self.unbreakableBreakTileImg and i[3] == 100:
                     i[2] = self.unbreakableBreakedTileImg
                 if i[3]==0:
-                    explosion_sound = mixer.Sound('./audio/explosion.wav')
-                    explosion_sound.play()
+                    self.sound.explosion()
                     time.sleep(0.01)
                     if i[2] == self.unbreakableBreakedTileImg:
                         score+=300

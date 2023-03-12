@@ -1,5 +1,6 @@
 import pygame
 from pygame import mixer
+from sound import Music
 
 '''
 Collision class
@@ -15,6 +16,7 @@ class Collision:
         self.surfaceRect, self.surfacePoints = None, None
         self.makeRect()
         self.remove = 0
+        self.sound = Music(True)
 
     # function to make rectangles of surface and object
     def makeRect(self):
@@ -45,9 +47,7 @@ class Collision:
         elif self.objectRect.midtop[1] > self.surfaceRect.midtop[1] and self.objectRect.midtop[1] <= self.surfaceRect.midbottom[1]:
             self.bottomSurfaceCollision()
         if self.remove == 1:
-            bullet_sound = mixer.Sound('./audio/laser.wav')
-            bullet_sound.play()
-
+            self.sound.collision()
     def topSurfaceCollision(self):
         if self.objectRect.midbottom[0] >=self.surfaceRect.topleft[0] and self.objectRect.midbottom[0] <= self.surfaceRect.topright[0]:
             self.object.changeY()
