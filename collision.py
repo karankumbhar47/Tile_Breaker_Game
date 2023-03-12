@@ -46,8 +46,11 @@ class Collision:
 
         elif self.objectRect.midtop[1] > self.surfaceRect.midtop[1] and self.objectRect.midtop[1] <= self.surfaceRect.midbottom[1]:
             self.bottomSurfaceCollision()
+        # sound playing after collistion
         if self.remove == 1:
             self.sound.collision()
+
+    #top surface collision
     def topSurfaceCollision(self):
         if self.objectRect.midbottom[0] >=self.surfaceRect.topleft[0] and self.objectRect.midbottom[0] <= self.surfaceRect.topright[0]:
             self.object.changeY()
@@ -63,6 +66,7 @@ class Collision:
             
             
     
+    #bottom surface collision
     def bottomSurfaceCollision(self):
         if self.objectRect.midtop[0]>= self.surfaceRect.bottomleft[0]  and self.objectRect.midtop[0] <= self.surfaceRect.bottomright[0]:
             self.object.changeY()
@@ -77,6 +81,7 @@ class Collision:
             self.object.changeY()
             self.remove=1
 
+    #left surface collision
     def leftSurfaceCollision(self):
         if self.objectRect.midright[1] >= self.surfaceRect.topleft[1] and self.objectRect.midright[1] <= self.surfaceRect.bottomleft[1]:
             self.object.changeX()
@@ -91,6 +96,7 @@ class Collision:
             self.remove=1
         
     
+    #Right surface collision
     def rightSurfaceCollision(self):
         if self.objectRect.midleft[1] >= self.surfaceRect.topleft[1] and self.objectRect.midleft[1] <= self.surfaceRect.bottomleft[1]:
             self.object.changeX()
@@ -104,4 +110,4 @@ class Collision:
             self.object.changeX()
             self.remove=1
 
-  
+

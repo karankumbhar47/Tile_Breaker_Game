@@ -1,8 +1,6 @@
 import pygame
 import time 
 from button import Button
-from PIL import ImageGrab, ImageFilter
-# from TileBreaker import reset
 clock = pygame.time.Clock()
 
 class Display:
@@ -35,7 +33,7 @@ class Display:
         self.loadingBarSetup()
         self.loadingComplete = False
         
-    
+    # reading and writting highscore in highscores.txt file
     def recordHighScore(self,highScore):
         try:
             with open("./highscores.txt", "r") as file:
@@ -50,7 +48,7 @@ class Display:
         return current_highscore
 
 
-
+    # creating buttons to display in different windows
     def createButtons(self):
         self.restartBtn = Button(self.scr.width - 200, self.scr.height - 150 ,self.restartBtn,self.scr)
         self.startBtn = Button(self.scr.width//2 - 200, self.scr.height//2 -40,self.startBtn,self.scr)
@@ -60,6 +58,7 @@ class Display:
         self.gamePlayBtn = Button(self.scr.width//2 - 80,self.scr.height//2 - 200,self.gamePlayBtn,self.scr)
         self.gameExitBtn = Button(self.scr.width//2 - 80 ,self.scr.height//2 + 100,self.gameExitBtn,self.scr)
 
+    # Main Menu Display
     def mainMenuDisplay(self,mainMenu,running):
         if self.startBtn.draw():
             mainMenu = 0
@@ -68,6 +67,7 @@ class Display:
             running = False
         return mainMenu,running
     
+    # Restart window Display
     def restartDisplay(self,score):
         highScore = self.recordHighScore(score)
 
@@ -91,20 +91,18 @@ class Display:
         self.scr.screen.blit(highScoreText,highScoreTextRect)
         self.scr.screen.blit(highScore ,highScoreRect)
 
-        # self.restartBtn.draw()
-        # self.exitMainMenuBtn.draw()
-
         mainMenu = 0
-        # score = 0
         level = 1
         reset = 0
         game_over = 1
+
+        # Restart button
         if self.restartBtn.draw():
             game_over = 0
             reset = 1
             score = 0
-            # slider,ball,tile = reset(self.scr)
             return mainMenu,score,level,game_over,reset 
+        #  Exit button
         if self.exitMainMenuBtn.draw():
             mainMenu = 1
             score = 0
@@ -116,35 +114,34 @@ class Display:
             
 
 
+    # Game window Display
     def gameWindow(self,score,level,ball,pause,screenshot):
         scoreText = self.font.render("Score :" + str(score), True, (255,255,255))
         self.scr.screen.blit(scoreText,(0,0))
         levelText = self.font.render("level "+str(level), True, (255,255,255))
         self.scr.screen.blit(levelText,(self.scr.width -110,10))
+
         mainMenu = 0
         resetCall = 0
         ballSpeed = ball.speed
-        # ballSpeed = ball.speedOriginal
+    
+        # Esc button event
         if pause:
+            
             self.scr.screen.blit(screenshot,(0,0))
             ball.speed = 0
+
+            # Exit button
             if self.gameExitBtn.draw():
                 mainMenu = 1
                 print("exit")
                 resetCall = 1
                 ballSpeed = ball.speedOriginal
                 pause = 0
-            # else:
-                # ballSpeed = s
+            
             if ballSpeed !=0:
+                # pause button
                 if self.gamePauseBtn.draw():
-                    # if ball.state == "moving":
-                    #     if ball.speed == 0:
-                    #         ballSpeed = ball.speedOriginal
-                    #     else:
-                    #         ballSpeed = 0
-                    # else:
-                    #     ballSpeed = ball.speed
                     ballSpeed = ball.speedOriginal
                     pause = 0
                 else:
@@ -160,9 +157,8 @@ class Display:
             ballSpeed = ball.speed
         return mainMenu,ballSpeed,resetCall,pause
 
-    
+    # level up loading screen setting up 
     def loadingBarSetup(self):
-        print("loading ...")
         self.loadingComplete = False
         self.loadingFont = pygame.font.SysFont(None, 48)
         self.loading_text = self.font.render("Loading...", True, (255, 255, 255))
@@ -174,10 +170,10 @@ class Display:
         self.loading_bar_progress = 0
         self.loading_bar_rect = pygame.Rect(self.loading_bar_x, self.loading_bar_y, self.loading_bar_progress, self.loading_bar_height)
 
-    
+
+    # level up loading screen updating 
     def loadingUpdate(self):
         self.loading_bar_progress += 1
-
         self.scr.screen.blit(self.loading_text, self.loading_text_rect)
         self.loading_bar_rect.width = self.loading_bar_progress
         pygame.draw.rect(self.scr.screen, (255,255,255), self.loading_bar_rect)
@@ -186,20 +182,21 @@ class Display:
             self.loadingComplete = True
         return self.loadingComplete 
 
+    # navigating to next level
     def levelNext(self,level):
-        x = -1000
+        # x = -1000
         
-        while(self.loading_bar_progress < self.loading_bar_width) :
-            # time.sleep(1)
-            self.loading_bar_progress += 1
-            self.scr.screen.blit(self.loading_text, self.loading_text_rect)
-            self.loading_bar_rect.width = self.loading_bar_progress
-            pygame.draw.rect(self.scr.screen, (255,255,255), self.loading_bar_rect)
+        # while(self.loading_bar_progress < self.loading_bar_width) :
+        #     # time.sleep(1)
+        #     self.loading_bar_progress += 1
+        #     self.scr.screen.blit(self.loading_text, self.loading_text_rect)
+        #     self.loading_bar_rect.width = self.loading_bar_progress
+        #     pygame.draw.rect(self.scr.screen, (255,255,255), self.loading_bar_rect)
 
-            levelText = self.font.render("level "+str(level), True, (255,255,255))
-            self.scr.screen.blit(levelText,(self.scr.width/2, self.scr.height/2-100))
-            print(self.loading_bar_progress,self.loading_bar_width)
-            pass
+        #     levelText = self.font.render("level "+str(level), True, (255,255,255))
+        #     self.scr.screen.blit(levelText,(self.scr.width/2, self.scr.height/2-100))
+        #     print(self.loading_bar_progress,self.loading_bar_width)
+        #     pass
         
         resetLevel  = 1
         self.loadingComplete = False

@@ -9,6 +9,11 @@ from sound import Music
 import time
 from particle import ParticlePrinciple
 
+
+'''
+class that will needed for collision class 
+this will contain attributes related to individual tile
+'''
 class SubTile:
     def __init__(self,img,x,y) -> None:
         self.img=img
@@ -21,7 +26,7 @@ Created three different types of tiles
 Added related attributes to tile class
 '''
 class Tile:
-    def __init__(self,src,ball,level):
+    def __init__(self,src,ball,level,sound):
         self.mudTileImg = pygame.image.load('./images/19-Breakout-Tiles.png')
         self.steelTileImg = pygame.image.load('./images/17-Breakout-Tiles.png')
         self.steelTileBreakImg = pygame.image.load('./images/18-Breakout-Tiles.png')
@@ -42,8 +47,8 @@ class Tile:
         self.tile = None
         self.ball = ball
         self.particle1 = ParticlePrinciple(self.src)
-
-        self.sound = Music(True) 
+        self.sound = sound
+        
 
     #Function to build a tile at x and y coordinates on the screen
     def build(self,x,y,tileImg):
@@ -51,72 +56,80 @@ class Tile:
 
     #Function to store positions of tiles in a tilePositionArray
     def createTiles(self,level):
-        # startTileX = [100,153]
-        # startTileY = 100
-        # tileXpointsA = [startTileX[0]+(self.width*i) for i in range(0,6)]
-        # tileYpoints = [startTileY+(self.height*i) for i in range(0,11)]
-        # tilePositionArray = []
-        # for i in range(len(tileYpoints)):
-        #     for j in range(len(tileXpointsA)):
-        #         randomTile = random.choice([self.mudTileImg,self.steelTileImg,self.unbreakableTileImg])
-        #         if randomTile == self.mudTileImg:
-        #             tilePositionArray.append([tileXpointsA[j],tileYpoints[i],randomTile,100])
-        #             self.num+=1
-        #         elif randomTile == self.steelTileImg:
-        #             tilePositionArray.append([tileXpointsA[j],tileYpoints[i],randomTile,200])
-        #             self.num+=1
-        #         else:
-        #             tilePositionArray.append([tileXpointsA[j],tileYpoints[i],randomTile,300])
-        #             self.num+=1
-        # return tilePositionArray
         if path.exists(f'level{level}_data'):
             pickle_in = open(f'level{level}_data', 'rb')
             data = pickle.load(pickle_in)
 
-        tilePositionArray = []
-        row_count = 0
-        tile_width = 106
-        tile_height = 28
-        for row in data:
-            col_count = 0
-            for tile in row:
-                if tile == 1:
-                    img = pygame.transform.scale(
-                        self.unbreakableTileImg, (tile_width, tile_height))
-                    img_rect = img.get_rect()
-                    img_rect.x = col_count * tile_width
-                    img_rect.y = row_count * tile_height
-                    tile = [img_rect.x, img_rect.y, self.unbreakableTileImg, 300]
-                    tilePositionArray.append(tile)
-                    self.num += 1
+            tilePositionArray = []
+            row_count = 0
+            tile_width = 106
+            tile_height = 28
+            for row in data:
+                col_count = 0
+                for tile in row:
+                    if tile == 1:
+                        img = pygame.transform.scale(
+                            self.unbreakableTileImg, (tile_width, tile_height))
+                        img_rect = img.get_rect()
+                        img_rect.x = col_count * tile_width
+                        img_rect.y = row_count * tile_height
+                        tile = [img_rect.x, img_rect.y, self.unbreakableTileImg, 300]
+                        tilePositionArray.append(tile)
+                        self.num += 1
 
-                if tile == 2:
-                    img = pygame.transform.scale(
-                        self.steelTileImg, (tile_width, tile_height))
-                    img_rect = img.get_rect()
-                    img_rect.x = col_count * tile_width
-                    img_rect.y = row_count * tile_height
-                    tile = [img_rect.x, img_rect.y, self.steelTileImg, 200]
-                    tilePositionArray.append(tile)
-                    self.num += 1
+                    if tile == 2:
+                        img = pygame.transform.scale(
+                            self.steelTileImg, (tile_width, tile_height))
+                        img_rect = img.get_rect()
+                        img_rect.x = col_count * tile_width
+                        img_rect.y = row_count * tile_height
+                        tile = [img_rect.x, img_rect.y, self.steelTileImg, 200]
+                        tilePositionArray.append(tile)
+                        self.num += 1
 
-                if tile == 3:
-                    img = pygame.transform.scale(
-                        self.mudTileImg, (tile_width, tile_height))
-                    img_rect = img.get_rect()
-                    img_rect.x = col_count * tile_width
-                    img_rect.y = row_count * tile_height
-                    tile = [img_rect.x, img_rect.y, self.mudTileImg, 100]
-                    tilePositionArray.append(tile)
-                    self.num += 1
+                    if tile == 3:
+                        img = pygame.transform.scale(
+                            self.mudTileImg, (tile_width, tile_height))
+                        img_rect = img.get_rect()
+                        img_rect.x = col_count * tile_width
+                        img_rect.y = row_count * tile_height
+                        tile = [img_rect.x, img_rect.y, self.mudTileImg, 100]
+                        tilePositionArray.append(tile)
+                        self.num += 1
 
-                col_count += 1
-            row_count += 1
+                    col_count += 1
+                row_count += 1
+        else:
+            startTileX = [0,53]
+            startTileY = 100
+            tileXpointsA = [startTileX[0]+(self.width*i) for i in range(0,8)]
+            tileXpointsB = [startTileX[1]+(self.width*i) for i in range(0,7)]
+            tileYpoints = [startTileY+(self.height*i) for i in range(0,11)]
+            tilePositionArray = []
+            for i in range(len(tileYpoints)):
+                col1 = random.randint(0,7)
+                col2 = random.randint(0,6)
+                if i%2==0:
+                    list = random.sample(tileXpointsA,col1)
+                else:
+                    list = random.sample(tileXpointsB,col2)
 
+                for j in range(len(list)):
+                    randomTile = random.choice([self.mudTileImg,self.steelTileImg,self.unbreakableTileImg])
+                    if randomTile == self.mudTileImg:
+                        tilePositionArray.append([list[j],tileYpoints[i],randomTile,100])
+                        self.num+=1
+                    elif randomTile == self.steelTileImg:
+                        tilePositionArray.append([list[j],tileYpoints[i],randomTile,200])
+                        self.num+=1
+                    else:
+                        tilePositionArray.append([list[j],tileYpoints[i],randomTile,300])
+                        self.num+=1
         return tilePositionArray
 
     #Function to display the tiles on the screen
     def displayPattern(self):
+        self.particle1.emit()
         for i in range(len(self.positionArray)):
             self.build(self.positionArray[i][0],self.positionArray[i][1],self.positionArray[i][2])
 

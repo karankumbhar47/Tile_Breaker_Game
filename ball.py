@@ -1,10 +1,7 @@
 import pygame
-import math
 import time
 from collision import Collision
-from pygame import mixer
 import time
-from sound import Music
 
 '''
 Creating Ball class
@@ -12,15 +9,16 @@ Detecting collisions with slider
 Adding related attributes to Ball class
 '''
 class Ball():
-    def __init__(self,x,y,scr,slider):
+    def __init__(self,x,y,scr,slider,sound):
         self.img = pygame.image.load('./images/58-Breakout-Tiles.png')
         self.deadImg = pygame.image.load('./images/ghost.png')
         self.y_cor = y
         self.x_cor = x
         self.deadImgX = self.x_cor
         self.deadImgY = -50
+        self.sound = sound
         
-        self.speed = 2
+        self.speed = 1.5
         self.speedOriginal = self.speed
         self.x_dir = 1
         self.y_dir = -1
@@ -38,14 +36,10 @@ class Ball():
         self.heartImg = pygame.image.load('./images/60-Breakout-Tiles.png')
         self.heartImg = pygame.transform.scale(self.heartImg,(32,32))
         self.gameOver = 0
-        self.sound = Music(True)
 
     #function to control movement of ball
     def move(self):
         if self.state == "moving":
-            
-            # xOriginal = self.x_cor
-            # yOriginal = self.y_cor
 
             self.x_cor += self.speed * self.x_dir
             self.y_cor +=self.speed * self.y_dir
@@ -58,36 +52,28 @@ class Ball():
             if self.x_cor <= 0 or self.x_cor >= self.scr.width - self.width:
                 self.x_dir*= -1
                 self.sound.collision()
+            
             #checking if ball will collide with cieling
             if self.y_cor <= 0 :
                 self.y_dir*= -1
                 self.sound.collision()
+            
             #checking if ball will collide with floor
             if self.y_cor >= self.scr.height-self.length:
-                self.sound.LifeLose()
-                time.sleep(0.1)
-                self.deadImgX = self.x_cor
-                self.deadImgY = self.y_cor
-                self.x_cor = -100
-                self.y_cor = -100
                 self.reset_position(self.slider.x_cor+self.slider.width/2-(self.width/2),self.slider.y_cor-self.length)
 
-            
-
-            
-
+        # reseting the ball position
         else:
             self.x_cor = self.slider.x_cor+self.slider.width/2-self.width/2
             self.y_cor = self.slider.y_cor-self.length
 
-        #Setting new positions of ball
-        # self.x_cor = xOriginal 
-        # self.y_cor = yOriginal
 
         self.x_cor += self.speed * self.x_dir
         self.y_cor +=self.speed * self.y_dir
+        
         # building ball at new position
         self.build(self.x_cor, self.y_cor)
+        
         # building heart
         self.build_heart()
 
@@ -118,13 +104,14 @@ class Ball():
     #function to reset the position of ball    
     def reset_position(self,x,y):
         self.life -= 1
+        # checking game over condition
         if self.life ==0:
             self.gameOver = 1
             self.sound.gameOver()
-            time.sleep(0.01)
+            # time.sleep(0.01)
         else:
             self.sound.LifeLose()
-            time.sleep(0.01)
+            # time.sleep(0.01)
         self.x_cor = x
         self.y_cor = y
         self.x_dir = 1
