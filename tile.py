@@ -7,6 +7,7 @@ from os import path
 from pygame import mixer
 from sound import Music
 import time
+from particle import ParticlePrinciple
 
 class SubTile:
     def __init__(self,img,x,y) -> None:
@@ -40,6 +41,7 @@ class Tile:
         self.positionArray = self.createTiles(level)
         self.tile = None
         self.ball = ball
+        self.particle1 = ParticlePrinciple(self.src)
 
         self.sound = Music(True) 
 
@@ -125,16 +127,23 @@ class Tile:
             self.collisionDetect(tile,self.ball)
             # test for collision between the two sprites
             if self.remove ==1:
+                bullet_sound = mixer.Sound('./audio/laser.wav')
                 i[3] -= 100
                 if i[2] == self.steelTileImg and i[3] == 100:
                     i[2] = self.steelTileBreakImg
+                    bullet_sound.play()
                 elif i[2] == self.unbreakableTileImg and i[3] == 200:
                     i[2] = self.unbreakableBreakTileImg
+                    bullet_sound.play()
                 elif i[2] == self.unbreakableBreakTileImg and i[3] == 100:
                     i[2] = self.unbreakableBreakedTileImg
+                    bullet_sound.play()
+
                 if i[3]==0:
                     self.sound.explosion()
                     time.sleep(0.01)
+                    for j in range(random.randint(1,20)):
+                        self.particle1.add_particles(i[0] + 53,i[1]+14)
                     if i[2] == self.unbreakableBreakedTileImg:
                         score+=300
                     elif i[2] == self.steelTileBreakImg:
