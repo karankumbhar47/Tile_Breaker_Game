@@ -20,7 +20,7 @@ class Ball():
         self.deadImgX = self.x_cor
         self.deadImgY = -50
         
-        self.speed = 0.3
+        self.speed = 2
         self.speedOriginal = self.speed
         self.x_dir = 1
         self.y_dir = -1

@@ -127,17 +127,16 @@ class Tile:
             self.collisionDetect(tile,self.ball)
             # test for collision between the two sprites
             if self.remove ==1:
-                bullet_sound = mixer.Sound('./audio/laser.wav')
                 i[3] -= 100
                 if i[2] == self.steelTileImg and i[3] == 100:
                     i[2] = self.steelTileBreakImg
-                    bullet_sound.play()
+                    self.sound.collision()
                 elif i[2] == self.unbreakableTileImg and i[3] == 200:
                     i[2] = self.unbreakableBreakTileImg
-                    bullet_sound.play()
+                    self.sound.collision()
                 elif i[2] == self.unbreakableBreakTileImg and i[3] == 100:
                     i[2] = self.unbreakableBreakedTileImg
-                    bullet_sound.play()
+                    self.sound.collision()
 
                 if i[3]==0:
                     self.sound.explosion()
