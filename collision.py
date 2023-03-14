@@ -9,14 +9,14 @@ checking collision between object and surface
 '''
 
 class Collision:
-    def __init__(self,surface, object):
+    def __init__(self,surface, object,sound):
         self.surface = surface
         self.object = object
         self.objectRect, self.objectPoints = None, None
         self.surfaceRect, self.surfacePoints = None, None
         self.makeRect()
         self.remove = 0
-        self.sound = Music(True)
+        self.sound = sound
 
     # function to make rectangles of surface and object
     def makeRect(self):

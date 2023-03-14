@@ -45,7 +45,7 @@ class Ball():
             self.y_cor +=self.speed * self.y_dir
 
             # function to check collision of ball and slider
-            collide = Collision(self.slider,self.ball)
+            collide = Collision(self.slider,self.ball,self.sound)
             collide.collisionDetect()
 
             #checking if ball will collide with left and right screen

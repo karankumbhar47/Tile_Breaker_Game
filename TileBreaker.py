@@ -18,7 +18,7 @@ pygame.init()
 screen_height = 800
 screen_width = 836
 main_menu = 1
-level = 5
+level = 1
 levelMax = 10
 score = 0
 resetCall = 0
@@ -87,6 +87,13 @@ while running:
     # showing main menu
     if main_menu==1:
         main_menu,running = display.mainMenuDisplay(main_menu,running)
+
+    elif main_menu == 5:
+        soundState,main_menu = display.soundDisplay(sound.state)
+        sound.state = soundState
+
+    elif main_menu ==6:
+        main_menu = display.highScoreDisplay()
 
     elif main_menu ==0:
 

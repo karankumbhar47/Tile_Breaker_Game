@@ -26,6 +26,28 @@ class Display:
         self.gamePlayBtn = pygame.image.load('./images/Play_Button_Symbol_Png.png')
         self.gamePlayBtn = pygame.transform.scale(self.gamePlayBtn,(150,150))
 
+        self.soundBtn = pygame.image.load('./images/start_btn.png')
+        self.soundBtn = pygame.transform.scale(self.soundBtn,(180,80))
+
+        self.highScoreBtn = pygame.image.load('./images/start_btn.png')
+        self.highScoreBtn = pygame.transform.scale(self.highScoreBtn,(180,80))
+
+        self.onSoundBtn = pygame.image.load('./images/on_btn.png')
+        self.onSoundBtn = pygame.transform.scale(self.onSoundBtn, (180,80))
+
+        self.offSoundBtn = pygame.image.load('./images/off_btn.png')
+        self.offSoundBtn = pygame.transform.scale(self.offSoundBtn,(180,80))
+
+        self.backBtnImg = pygame.image.load('./images/exit_btn.png')
+        self.backBtnImg = pygame.transform.scale(self.exitBtnImg,(180,80))
+
+        self.resetHighScoreBtn = pygame.image.load('./images/Pause_Button_Symbol_Png.png')
+        self.resetHighScoreBtn = pygame.transform.scale(self.resetHighScoreBtn,(150,150))
+
+        self.OnAudioImg = pygame.image.load('./images/onAudio_btn.png')
+        self.OnAudioImg = pygame.transform.scale(self.OnAudioImg,(80,80))
+        self.OffAudioImg = pygame.image.load('./images/offAudio_btn.png')
+        self.OffAudioImg = pygame.transform.scale(self.OffAudioImg,(80,80))
 
         self.scr = scr
         self.font = pygame.font.Font('freesansbold.ttf', 32)
@@ -39,30 +61,46 @@ class Display:
             with open("./highscores.txt", "r") as file:
                 current_highscore = int(file.read())
         except:
-            current_highscore = highScore
+            if highScore != None:
+                current_highscore = highScore
+            else:
+                current_highscore = 0
 
-        if highScore > current_highscore:
-            with open("highscores.txt", "w") as file:
-                file.write(str(highScore))
-            current_highscore = highScore
+        if highScore != None:
+            if highScore > current_highscore:
+                with open("highscores.txt", "w") as file:
+                    file.write(str(highScore))
+                current_highscore = highScore
         return current_highscore
 
 
     # creating buttons to display in different windows
     def createButtons(self):
+        self.startBtn = Button(self.scr.width//2 - 75, self.scr.height//2 -300,self.startBtn,self.scr)
+        self.soundBtn = Button(self.scr.width//2 -75, self.scr.height//2 - 150,self.soundBtn,self.scr)
+        self.highScoreBtn = Button(self.scr.width//2 -75, self.scr.height//2 + 0,self.highScoreBtn,self.scr)
+        self.exitBtn = Button(self.scr.width//2 -75, self.scr.height//2 +150,self.exitBtnImg,self.scr)
+        
+        self.resetHighScoreBtn = Button(10,self.scr.height - 100 ,self.gamePauseBtn,self.scr)
         self.restartBtn = Button(self.scr.width - 200, self.scr.height - 150 ,self.restartBtn,self.scr)
-        self.startBtn = Button(self.scr.width//2 - 200, self.scr.height//2 -40,self.startBtn,self.scr)
-        self.exitBtn = Button(self.scr.width//2 + 50, self.scr.height//2 -40,self.exitBtnImg,self.scr)
         self.exitMainMenuBtn = Button(20, self.scr.height - 150,self.exitBtnImg,self.scr)
+        
         self.gamePauseBtn = Button(self.scr.width//2 - 80,self.scr.height//2 - 200,self.gamePauseBtn,self.scr)
         self.gamePlayBtn = Button(self.scr.width//2 - 80,self.scr.height//2 - 200,self.gamePlayBtn,self.scr)
         self.gameExitBtn = Button(self.scr.width//2 - 80 ,self.scr.height//2 + 100,self.gameExitBtn,self.scr)
 
+        self.onSoundBtn = Button(self.scr.width//2 - 90,self.scr.height//2 - 90,self.onSoundBtn,self.scr)
+        self.offSoundBtn = Button(self.scr.width//2 - 90,self.scr.height//2 + 10,self.offSoundBtn,self.scr)
+        self.backBtn = Button(self.scr.width - 190,self.scr.height - 100 ,self.backBtnImg,self.scr)
+        
     # Main Menu Display
     def mainMenuDisplay(self,mainMenu,running):
         if self.startBtn.draw():
             mainMenu = 0
-
+        if self.soundBtn.draw():
+            mainMenu = 5
+        if self.highScoreBtn.draw():
+            mainMenu = 6
         if self.exitBtn.draw():
             running = False
         return mainMenu,running
@@ -141,7 +179,6 @@ class Display:
             # Exit button
             if self.gameExitBtn.draw():
                 mainMenu = 1
-                print("exit")
                 resetCall = 1
                 ballSpeed = ball.speedOriginal
                 pause = 0
@@ -208,3 +245,50 @@ class Display:
         resetLevel  = 1
         self.loadingComplete = False
         return resetLevel
+    
+
+    def soundDisplay(self,state):
+        if self.offSoundBtn.draw():
+            state = False
+            mainMenu = 5
+        if self.onSoundBtn.draw():
+            state = True
+            mainMenu = 5
+        if self.backBtn.draw():
+            mainMenu = 1
+        else:
+            mainMenu = 5
+        if state:
+            self.scr.screen.blit(self.OnAudioImg,(self.scr.width - 200, 10))
+        else:
+            self.scr.screen.blit(self.OffAudioImg,(self.scr.width - 200, 10))
+
+        return state,mainMenu
+    
+
+    def highScoreDisplay(self):
+        with open("./highscores.txt", "r") as file:
+            highScore = int(file.read())
+        highScoreText = self.font.render("High Score",True,(255,255,255))
+        highScoreTextRect = highScoreText.get_rect()
+        highScoreTextRect.center = [self.scr.width//2,self.scr.height//2 - 16]
+        highScore = self.font.render(str(highScore), True, (255,255,255))
+        highScoreRect = highScore.get_rect()
+        highScoreRect.center = [self.scr.width//2,self.scr.height//2 +26]
+
+        self.scr.screen.blit(highScoreText,highScoreTextRect)
+        self.scr.screen.blit(highScore ,highScoreRect)
+        mainMenu = 6
+        if self.backBtn.draw():
+            mainMenu = 1
+        if self.resetHighScoreBtn.draw():
+            try:
+                with open("./highscores.txt", "w") as file:
+                    file.write(str(0))
+                    print("file opened")
+            except:
+                print("Nothing to reset")
+        return mainMenu
+            
+
+    
