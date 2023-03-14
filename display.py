@@ -33,16 +33,16 @@ class Display:
         self.highScoreBtn = pygame.transform.scale(self.highScoreBtn,(240,80))
 
         self.onSoundBtn = pygame.image.load('./images/on_btn.png')
-        self.onSoundBtn = pygame.transform.scale(self.onSoundBtn, (150,80))
+        self.onSoundBtn = pygame.transform.scale(self.onSoundBtn, (130,80))
 
         self.offSoundBtn = pygame.image.load('./images/off_btn.png')
-        self.offSoundBtn = pygame.transform.scale(self.offSoundBtn,(150,80))
+        self.offSoundBtn = pygame.transform.scale(self.offSoundBtn,(130,80))
 
         self.backBtnImg = pygame.image.load('./images/back_btn.png')
         self.backBtnImg = pygame.transform.scale(self.backBtnImg,(80,80))
 
-        self.resetHighScoreBtn = pygame.image.load('./images/Pause_Button_Symbol_Png.png')
-        self.resetHighScoreBtn = pygame.transform.scale(self.resetHighScoreBtn,(150,150))
+        self.resetHighScoreBtn = pygame.image.load('./images/reset_btn.png')
+        self.resetHighScoreBtn = pygame.transform.scale(self.resetHighScoreBtn,(80,80))
 
         self.OnAudioImg = pygame.image.load('./images/onAudio_btn.png')
         self.OnAudioImg = pygame.transform.scale(self.OnAudioImg,(80,80))
@@ -81,7 +81,7 @@ class Display:
         self.highScoreBtn = Button(self.scr.width//2 -105, self.scr.height//2 + 0,self.highScoreBtn,self.scr)
         self.exitBtn = Button(self.scr.width//2 -75, self.scr.height//2 +150,self.exitBtnImg,self.scr)
         
-        self.resetHighScoreBtn = Button(10,self.scr.height - 100 ,self.gamePauseBtn,self.scr)
+        self.resetHighScoreBtn = Button(10,self.scr.height - 100 ,self.resetHighScoreBtn,self.scr)
         self.restartBtn = Button(self.scr.width - 200, self.scr.height - 150 ,self.restartBtn,self.scr)
         self.exitMainMenuBtn = Button(20, self.scr.height - 150,self.exitBtnImg,self.scr)
         
@@ -89,8 +89,8 @@ class Display:
         self.gamePlayBtn = Button(self.scr.width//2 - 80,self.scr.height//2 - 200,self.gamePlayBtn,self.scr)
         self.gameExitBtn = Button(self.scr.width//2 - 80 ,self.scr.height//2 + 100,self.gameExitBtn,self.scr)
 
-        self.onSoundBtn = Button(self.scr.width//2 - 75,self.scr.height//2 - 90,self.onSoundBtn,self.scr)
-        self.offSoundBtn = Button(self.scr.width//2 - 75,self.scr.height//2 + 10,self.offSoundBtn,self.scr)
+        self.onSoundBtn = Button(self.scr.width//2 - 140,self.scr.height//2 - 40,self.onSoundBtn,self.scr)
+        self.offSoundBtn = Button(self.scr.width//2 + 10,self.scr.height//2 - 40,self.offSoundBtn,self.scr)
         self.backBtn = Button(self.scr.width - 90,self.scr.height - 100 ,self.backBtnImg,self.scr)
         
     # Main Menu Display
@@ -260,9 +260,9 @@ class Display:
         else:
             mainMenu = 5
         if state:
-            self.scr.screen.blit(self.OnAudioImg,(self.scr.width - 200, 10))
+            self.scr.screen.blit(self.OnAudioImg,(self.scr.width - 90, 10))
         else:
-            self.scr.screen.blit(self.OffAudioImg,(self.scr.width - 200, 10))
+            self.scr.screen.blit(self.OffAudioImg,(self.scr.width - 90, 10))
 
         return state,mainMenu
     

@@ -18,7 +18,7 @@ class Ball():
         self.deadImgY = -50
         self.sound = sound
         
-        self.speed = 1.5
+        self.speed = 1
         self.speedOriginal = self.speed
         self.x_dir = 1
         self.y_dir = -1
